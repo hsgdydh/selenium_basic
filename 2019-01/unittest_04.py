@@ -32,12 +32,14 @@ class Cnode(unittest.TestCase):
         ele_textarea.click()
 
         ActionChains(driver).move_to_element(ele_textarea).send_keys('xxxxxx').perform()
-        time.sleep(2)
 
     def tearDown(self):
-        self.driver.save_screenshot('./postTopic.png')
+
+        self.driver.save_screenshot('./postTopic.png')  # ？：这里的路径是以什么为基准的，./不是当前文件夹下吗？
+
         # ？？ 没有以下这行代码浏览器也会自动关闭，这行代码是否是必要的？
-        self.driver.quit()
+        self.driver.quit()  # 答：本行代码是为了减少内存消耗，推荐加上
+
 
 if __name__ == '__main__':
     unittest.main()
