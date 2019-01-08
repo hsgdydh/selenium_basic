@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 '''
-今日练习：selenium actions 组合快捷键使用
+今日练习：selenium ActionChains + Keys 组合快捷键使用
 
-demo：使用selenium actions库实现 Ctrl + B
+demo：使用selenium ActionChains + Keys 实现 Ctrl + B 加粗
 
 '''
 
@@ -35,6 +35,7 @@ class Cnode(unittest.TestCase):
         ele_textarea = driver.find_element_by_class_name('CodeMirror-scroll')
         ele_textarea.click()
 
+        # ActionChains + Keys 实现 Ctrl + B 加粗
         ActionChains(driver).move_to_element(ele_textarea).send_keys(Keys.COMMAND, 'b').send_keys('哈哈哈').perform()
         time.sleep(2)
 
