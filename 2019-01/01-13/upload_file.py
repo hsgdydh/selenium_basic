@@ -9,6 +9,7 @@
 
 '''
 
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -36,13 +37,31 @@ try:
         EC.presence_of_element_located((By.CSS_SELECTOR, "body > div.modal.hide.fade.in > div.modal-body > div > div.button.webuploader-container > div:nth-of-type(2) > input[type='file']"))
     )
     element_upload.send_keys('/Users/mac/Desktop/艺术签.gif')
+
+    # todo 等待上传图片弹出层消失点击预览按钮显示上传图片并截图保存
+    '''
+    # 方法一：显式等待
+    element_hide = WebDriverWait(driver, 5).until(
+        EC.invisibility_of_element_located(
+            (By.CSS_SELECTOR, "body > div:nth-of-type(3)"))
+    )
+    if (element_hide):
+        element_show = WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR,"#create_topic_form > fieldset > div > div > div.editor-toolbar > a.eicon-preview"))
+        )
+        element_show.click()
+        time.sleep(2)
+        driver.save_screenshot('./upload_01.png')
+    '''
+    # 方法二：强制等待
     time.sleep(2)
     element_show = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR,"#create_topic_form > fieldset > div > div > div.editor-toolbar > a.eicon-preview"))
+        EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "#create_topic_form > fieldset > div > div > div.editor-toolbar > a.eicon-preview"))
     )
     element_show.click()
     time.sleep(2)
-    driver.save_screenshot('./upload.png')
+    driver.save_screenshot('./upload_01.png')
 
 except Exception as e:
     print(e)
