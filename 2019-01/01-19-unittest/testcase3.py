@@ -12,13 +12,14 @@
         @unittest.expectedFailure    如果test失败了，这个test不计入失败的case数目
 
 
-    二、 用例的批量执行，3种方式
+    二、 用例的批量执行
 
     1. discover命令
 
     discover   批量执行指定目录下匹配的指定脚本下的所有以test开头的自定义用例（默认加载test开头的模块）
 
-        使用方法1-命令行执行：python3 -m unittest discover -v -s 'start-directory' -p 'test*.py'
+        python3 -m unittest discover -v -s 'start-directory' -p 'test*.py'
+
         参数：-v   详细输出
              -s   启动目录，默认为当前目录
              -p   匹配加载的测试文件(默认匹配test*.py)
@@ -33,8 +34,16 @@
     3. TestLoader().discover()将单个用例集合至测试套件中，再统一执行
 
         创建测试套件：suite = unittest.TestSuite()
-        利用discover()集合单个用例统一添加至套件中： loader = unittest.TestLoader().discover(start_dir, pattern ='test *.py', top_level_dir = None )
-                                                suite.addTests(loader)
+        利用discover()集合单个用例统一添加至套件中：
+        loader = unittest.TestLoader().discover(start_dir, pattern ='test *.py', top_level_dir = None )
+        suite.addTests(loader)
+
+    4.TestLoader().loadTestsFromTestCase()将制定测试类集合至测试套件，再统一执行
+
+        创建测试套件：suite = unittest.TestSuite()
+        利用loadTestsFromTestCase()集合测试类至套件中：
+        loader = unittest.TestLoader().loadTestsFromTestCase(testCaseClass)
+        suite.addTests(loader)
 
     三、执行套件中的用例  TextTestRunner
 
@@ -48,9 +57,6 @@
               0 (静默模式): 你只能获得总的测试用例数和总的结果 比如 总共100个 失败20 成功80
               1 (默认模式): 非常类似静默模式 只是在每个成功的用例前面有个“.” 每个失败的用例前面有个 “F”
               2 (详细模式):测试结果会显示每个测试用例的所有相关的信息
-
-
-    疑惑：unittest.main()的作用？
 
 
 '''
@@ -107,12 +113,19 @@ def suite():
 
 def suite2():
     suite = unittest.TestSuite()
-    loader = unittest.TestLoader().discover('test01', pattern='test*.py')
+    loader = unittest.TestLoader().discover('test01', pattern='test*.py')  # 等同于执行python -m unittest discover -v test01
     suite.addTests(loader)
     return suite
 
+def suite3():
+    suite = unittest.TestSuite()
+    loader = unittest.TestLoader().loadTestsFromTestCase(TestCase1)
+    loader2 = unittest.TestLoader().loadTestsFromTestCase(TestCase3)
+    suite.addTests(loader)
+    suite.addTests(loader2)
+    return suite
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner(verbosity=2)
-    result = runner.run(suite2())
+    result = runner.run(suite3())
     print(result)   # <unittest.runner.TextTestResult run=3 errors=0 failures=0>
