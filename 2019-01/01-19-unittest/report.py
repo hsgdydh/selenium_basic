@@ -52,16 +52,15 @@ class TestCase3(unittest.TestCase):
 
 def suite3():
     suite = unittest.TestSuite()
-    # loader = unittest.TestLoader().loadTestsFromTestCase(TestCase1)
+    loader = unittest.TestLoader().loadTestsFromTestCase(TestCase1)
     loader2 = unittest.TestLoader().loadTestsFromTestCase(TestCase3)
-    # suite.addTests(loader)
+    suite.addTests(loader)
     suite.addTests(loader2)
     return suite
 
 if __name__ == '__main__':
-    # unittest.main()
     suite = suite3()
-    runner = HTMLReport.TestRunner(report_file_name='test02',  # 报告文件名，如果未赋值，将采用“test+时间戳”
+    runner = HTMLReport.TestRunner(report_file_name='report_test01',  # 报告文件名，如果未赋值，将采用“test+时间戳”
                                    output_path='report',  # 保存文件夹名，默认“report”
                                    title='测试报告',  # 报告标题，默认“测试报告”
                                    description='无测试描述',  # 报告描述，默认“测试描述”
